@@ -1,0 +1,13 @@
+{
+  "name": "level-1-express-typescript-prisma",
+  "version": "1.0.0",
+  "description": "``` bash mkdir prisma-express-ts cd prisma-express-ts npm init -y ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
