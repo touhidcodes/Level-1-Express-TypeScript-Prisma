@@ -40,7 +40,10 @@ Replace `tsconfig.json`:
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true
-  }
+  },
+      "include": [
+    "src/**/*"
+  ]
 }
 ```
 
