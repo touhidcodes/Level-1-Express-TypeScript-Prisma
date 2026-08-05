@@ -11,3 +11,96 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        UserRole @default(CUSTOMER)
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orders       Order[]
+  cartItems    CartItem[]
+  @@map("users")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  products    Product[]
+  @@map("categories")
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  price         Float
+  stock         Int
+  image         String?
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+  isDeleted     Boolean @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+   @@map("products")
+}
+
+model CartItem {
+  id          String   @id @default(uuid())
+  userId      String
+  productId   String
+  quantity    Int      @default(1)
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@unique([userId, productId])
+  @@map("cart_items")
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  userId        String
+  totalAmount   Float
+  status        OrderStatus @default(PENDING)
+  isDeleted     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User        @relation(fields: [userId], references: [id])
+  orderItems    OrderItem[]
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  productId   String
+  quantity    Int
+  price       Float
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product      Product @relation(fields: [productId], references: [id])
+  createdAt    DateTime @default(now())
+  @@unique([orderId, productId])
+  @@map("order_items")
+}
