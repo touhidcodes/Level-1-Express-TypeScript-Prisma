@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Welcome to Prisma Express Starter API 🚀",
+    message: "Welcome to Prisma Express Starter API",
   });
 });
 
