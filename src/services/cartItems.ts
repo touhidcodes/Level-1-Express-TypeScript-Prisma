@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma.js";
+import prisma from "@/lib/prisma";
 import { Router, Request, Response } from "express";
 
 // Initialize Express router for cart item-related routes
